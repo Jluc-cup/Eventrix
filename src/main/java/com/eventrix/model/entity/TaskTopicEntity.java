@@ -1,5 +1,6 @@
 package com.eventrix.model.entity;
 
+import com.eventrix.model.localobj.TaskTopicCreateObj;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +26,15 @@ public class TaskTopicEntity {
     private String description;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive = true;
+    private boolean isActive;
 
     @Column(name = "priority")
     private Long priority;
+
+    public TaskTopicEntity(TaskTopicCreateObj taskTopicCreateObj) {
+        name = taskTopicCreateObj.name();
+        description = taskTopicCreateObj.description();
+        isActive = false;
+        priority = taskTopicCreateObj.priority();
+    }
 }
