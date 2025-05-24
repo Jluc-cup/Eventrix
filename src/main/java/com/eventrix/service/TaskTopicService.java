@@ -11,4 +11,6 @@ public interface TaskTopicService {
     void update(int taskTopicId, TaskTopicUpdateReqV1 req);
 
     void updateActive(int taskTopicId, TaskTopicUpdateActiveReqV1 req);
+
+    void delete(int taskTopicId);
 }

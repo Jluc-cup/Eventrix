@@ -1,5 +1,6 @@
 package com.eventrix.model.entity;
 
+import com.eventrix.base.util.DateTimeUtil;
 import com.eventrix.model.localobj.TaskTopicCreateObj;
 import com.eventrix.model.localobj.TaskTopicUpdateObj;
 import com.eventrix.model.localobj.TaskTopicUpdateStatusObj;
@@ -7,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -33,6 +36,9 @@ public class TaskTopicEntity {
     @Column(name = "priority")
     private Long priority;
 
+    @Column(name = "deleted")
+    private Instant deleted;
+
     public TaskTopicEntity(TaskTopicCreateObj taskTopicCreateObj) {
         name = taskTopicCreateObj.name();
         description = taskTopicCreateObj.description();
@@ -46,7 +52,8 @@ public class TaskTopicEntity {
                 obj.name(),
                 obj.description(),
                 this.isActive,
-                obj.priority()
+                obj.priority(),
+                this.deleted
         );
     }
 
@@ -56,7 +63,19 @@ public class TaskTopicEntity {
                 this.name,
                 this.description,
                 obj.isActive(),
-                this.priority
+                this.priority,
+                this.deleted
+        );
+    }
+
+    public TaskTopicEntity delete() {
+        return new TaskTopicEntity(
+                this.id,
+                this.name,
+                this.description,
+                this.isActive,
+                this.priority,
+                DateTimeUtil.getCurrentTime()
         );
     }
 }
