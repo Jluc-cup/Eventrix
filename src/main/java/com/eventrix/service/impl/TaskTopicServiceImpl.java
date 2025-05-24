@@ -8,34 +8,37 @@ import com.eventrix.model.entity.TaskTopicEntity;
 import com.eventrix.model.localobj.TaskTopicCreateObj;
 import com.eventrix.model.localobj.TaskTopicUpdateObj;
 import com.eventrix.model.localobj.TaskTopicUpdateStatusObj;
+import com.eventrix.base.feature.AbstractService;
 import com.eventrix.service.TaskTopicService;
-import lombok.RequiredArgsConstructor;
+import com.eventrix.service.strategy.tasktopic.TaskTopicCreateStrategy;
+import com.eventrix.service.strategy.tasktopic.TaskTopicUpdateStrategy;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class TaskTopicServiceImpl implements TaskTopicService {
+public class TaskTopicServiceImpl extends AbstractService implements TaskTopicService {
 
     private final TaskTopicDao taskTopicDao;
+
+    public TaskTopicServiceImpl(TaskTopicDao taskTopicDao) {
+        this.taskTopicDao = taskTopicDao;
+        registerStrategy(TaskTopicCreateObj.class, new TaskTopicCreateStrategy(taskTopicDao));
+        registerStrategy(TaskTopicUpdateObj.class, new TaskTopicUpdateStrategy(taskTopicDao));
+    }
+
 
     @Override
     public int create(TaskTopicCreateReqV1 req) {
         final TaskTopicCreateObj taskTopicCreateObj = new TaskTopicCreateObj(req);
-        final TaskTopicEntity taskTopicEntity = new TaskTopicEntity(taskTopicCreateObj);
-        taskTopicDao.save(taskTopicEntity);
-        return taskTopicEntity.getId();
+        return executeOperation(taskTopicCreateObj);
     }
 
 
     @Override
     public void update(int taskTopicId, TaskTopicUpdateReqV1 req) {
-
-        final TaskTopicUpdateObj taskTopicUpdateObj = new TaskTopicUpdateObj(req);
-        TaskTopicEntity taskTopicEntity = taskTopicDao.findById(taskTopicId);
-        taskTopicEntity = taskTopicEntity.update(taskTopicUpdateObj);
-        taskTopicDao.save(taskTopicEntity);
-
+        final TaskTopicUpdateObj taskTopicUpdateObj = new TaskTopicUpdateObj(taskTopicId, req);
+        executeOperation(taskTopicUpdateObj);
     }
+
 
     @Override
     public void updateActive(int taskTopicId, TaskTopicUpdateActiveReqV1 req) {
