@@ -1,6 +1,8 @@
 package com.eventrix.model.entity;
 
 import com.eventrix.model.localobj.TaskTopicCreateObj;
+import com.eventrix.model.localobj.TaskTopicUpdateObj;
+import com.eventrix.model.localobj.TaskTopicUpdateStatusObj;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +38,25 @@ public class TaskTopicEntity {
         description = taskTopicCreateObj.description();
         isActive = false;
         priority = taskTopicCreateObj.priority();
+    }
+
+    public TaskTopicEntity update(TaskTopicUpdateObj obj) {
+        return new TaskTopicEntity(
+                this.id,
+                obj.name(),
+                obj.description(),
+                this.isActive,
+                obj.priority()
+        );
+    }
+
+    public TaskTopicEntity updateStatus(TaskTopicUpdateStatusObj obj) {
+        return new TaskTopicEntity(
+                this.id,
+                this.name,
+                this.description,
+                obj.isActive(),
+                this.priority
+        );
     }
 }
