@@ -3,7 +3,7 @@ package com.eventrix.model.localobj;
 import com.eventrix.api.req.TaskTopicUpdateReqV1;
 import com.eventrix.service.strategy.StrategyContextInterface;
 
-public record TaskTopicUpdateObj(int taskTopicId,
+public record TaskTopicUpdateObj(int id,
                                  String name,
                                  String description,
                                  Long priority) implements StrategyContextInterface {

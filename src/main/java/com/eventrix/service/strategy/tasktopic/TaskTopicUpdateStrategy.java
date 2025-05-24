@@ -1,5 +1,6 @@
 package com.eventrix.service.strategy.tasktopic;
 
+import com.eventrix.base.feature.transaction.TransactionWrapper;
 import com.eventrix.dao.TaskTopicDao;
 import com.eventrix.model.entity.TaskTopicEntity;
 import com.eventrix.model.localobj.TaskTopicUpdateObj;
@@ -13,11 +14,18 @@ public class TaskTopicUpdateStrategy implements OperationStrategy<TaskTopicUpdat
 
     private final TaskTopicDao taskTopicDao;
 
+    private final TransactionWrapper transaction;
+
     @Override
-    public Void execute(TaskTopicUpdateObj request) {
-        TaskTopicEntity taskTopicEntity = taskTopicDao.findById(request.taskTopicId());
-        taskTopicEntity = taskTopicEntity.update(request);
-        taskTopicDao.save(taskTopicEntity);
+    public Void execute(TaskTopicUpdateObj obj) {
+        transaction.executeWithoutResult(() -> updateT(obj));
         return null;
+    }
+
+
+    private void updateT(TaskTopicUpdateObj obj) {
+        TaskTopicEntity taskTopicEntity = taskTopicDao.findById(obj.id());
+        taskTopicEntity = taskTopicEntity.update(obj);
+        taskTopicDao.save(taskTopicEntity);
     }
 }

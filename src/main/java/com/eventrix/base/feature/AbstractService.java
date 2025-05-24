@@ -20,7 +20,7 @@ public abstract class AbstractService {
         @SuppressWarnings("unchecked")
         OperationStrategy<Context, Result> strategy = (OperationStrategy<Context, Result>) strategies.get(request.getClass());
         if (strategy == null) {
-            // throw new StrategyNotFoundException("No strategy registered for context: " + request.getClass().getName());
+             throw new RuntimeException(); //TODO
         }
         return strategy.execute(request);
     }
