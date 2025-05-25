@@ -1,5 +1,7 @@
 package com.eventrix.base.feature.transaction;
 
+import com.eventrix.base.errors.ExceptionFactory;
+import com.eventrix.base.errors.ExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,7 @@ public class TransactionWrapper {
         try {
             return transactionTemplate.execute(status -> operation.execute());
         } catch (DataAccessException e) {
-           // throw new TaskTopicTransactionException("Database connection or operation failed", e);
-            throw new RuntimeException(e); // todo add custom exception and  logs
+            throw ExceptionFactory.create(ExceptionType.INTERNAL_SERVER_ERROR, e.getCause());
         }
     }
 
@@ -24,8 +25,7 @@ public class TransactionWrapper {
         try {
             transactionTemplate.executeWithoutResult(status -> operation.run());
         } catch (DataAccessException e) {
-            // throw new TaskTopicTransactionException("Database connection or operation failed", e);
-            throw new RuntimeException(e); // todo add custom exception and  logs
+            throw ExceptionFactory.create(ExceptionType.INTERNAL_SERVER_ERROR, e.getCause());
         }
     }
 
