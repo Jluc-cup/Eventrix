@@ -49,6 +49,9 @@ public class TaskEntity {
     @Column(name = "priority", nullable = false)
     private long priority = 0;
 
+    @Column(name = "retry_count", nullable = false)
+    private int retryCount = 1;
+
     @Column(name = "delay_ms")
     private Long delayMs;
 
