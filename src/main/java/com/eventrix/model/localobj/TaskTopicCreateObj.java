@@ -11,4 +11,8 @@ public record TaskTopicCreateObj(String name,
     public TaskTopicCreateObj(TaskTopicCreateReqV1 req) {
         this(req.name(), req.description(), req.priority());
     }
+
+    public TaskTopicCreateObj() {
+        this(null, null, null);
+    }
 }

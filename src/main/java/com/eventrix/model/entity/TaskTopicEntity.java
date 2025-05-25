@@ -46,6 +46,7 @@ public class TaskTopicEntity {
         priority = taskTopicCreateObj.priority();
     }
 
+
     public TaskTopicEntity update(TaskTopicUpdateObj obj) {
         return new TaskTopicEntity(
                 this.id,
