@@ -35,6 +35,9 @@ public class TaskEntity {
     @Column(name = "created_by")
     private String createdBy;
 
+    @Column(name = "logic")
+    private String logic;
+
     @Column(name = "parameters")
     private String parameters;
 
