@@ -27,6 +27,10 @@ public class TaskEntity {
     @JoinColumn(name = "task_topic_id")
     private TaskTopicEntity topic;
 
+    @ManyToOne
+    @JoinColumn(name = "command_id")
+    private CommandEntity command;
+
     @Column(name = "name", nullable = false)
     private String name;
 
