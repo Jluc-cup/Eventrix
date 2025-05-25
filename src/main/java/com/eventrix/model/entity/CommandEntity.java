@@ -59,4 +59,16 @@ public class CommandEntity {
                 this.deleted
         );
     }
+
+    public CommandEntity delete() {
+        return new CommandEntity(
+                this.id,
+                this.logic,
+                this.targetService,
+                this.description,
+                this.created,
+                this.updated,
+                DateTimeUtil.getCurrentTime()
+        );
+    }
 }

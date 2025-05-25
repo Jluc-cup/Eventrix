@@ -38,4 +38,15 @@ public class CommandRestController {
     }
 
 
+    @CommandSwaggerDoc(
+            summary = "Delete a command",
+            description = "Deletes a command by its ID",
+            errorCodes = {"404", "500"}
+    )
+    @DeleteMapping(value = "/eventrix/api/v1/command/{commandId}")
+    public void delete(@PathVariable int commandId) {
+        commandService.delete(commandId);
+    }
+
+
 }

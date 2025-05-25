@@ -6,9 +6,11 @@ import com.eventrix.base.feature.AbstractService;
 import com.eventrix.base.feature.transaction.TransactionWrapper;
 import com.eventrix.dao.CommandDao;
 import com.eventrix.model.localobj.CommandCreateObj;
+import com.eventrix.model.localobj.CommandDeleteObj;
 import com.eventrix.model.localobj.CommandUpdateObj;
 import com.eventrix.service.CommandService;
 import com.eventrix.service.strategy.command.CommandCreateStrategy;
+import com.eventrix.service.strategy.command.CommandDeleteStrategy;
 import com.eventrix.service.strategy.command.CommandUpdateStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,8 @@ public class CommandServiceImpl extends AbstractService implements CommandServic
                 new CommandCreateStrategy(commandDao, transaction));
         registerStrategy(CommandUpdateObj.class,
                 new CommandUpdateStrategy(commandDao, transaction));
-//        registerStrategy(TaskTopicUpdateStatusObj.class,
-//                new TaskTopicUpdateStatusStrategy(commandDao, transaction));
-//        registerStrategy(TaskTopicDeleteObj.class,
-//                new TaskTopicDeleteStrategy(commandDao, transaction));
+        registerStrategy(CommandDeleteObj.class,
+                new CommandDeleteStrategy(commandDao, transaction));
     }
 
 
@@ -43,6 +43,7 @@ public class CommandServiceImpl extends AbstractService implements CommandServic
 
     @Override
     public void delete(int commandId) {
-
+        final CommandDeleteObj commandDeleteObj = new CommandDeleteObj(commandId);
+        executeOperation(commandDeleteObj);
     }
 }
