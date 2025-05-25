@@ -17,7 +17,8 @@ import java.time.Instant;
 public class TaskEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_id_seq")
+    @SequenceGenerator(name = "task_id_seq", sequenceName = "task_id_seq", allocationSize = 100)
     @Column(name = "id", unique = true, nullable = false)
     @Access(value = AccessType.PROPERTY)
     private long id;

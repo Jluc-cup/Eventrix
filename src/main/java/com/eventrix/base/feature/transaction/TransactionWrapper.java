@@ -1,6 +1,5 @@
 package com.eventrix.base.feature.transaction;
 
-import com.eventrix.base.errors.CustomException;
 import com.eventrix.base.errors.ExceptionFactory;
 import com.eventrix.base.errors.ExceptionType;
 import lombok.RequiredArgsConstructor;
