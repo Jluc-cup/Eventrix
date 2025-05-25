@@ -1,5 +1,8 @@
 package com.eventrix.model.entity;
 
+import com.eventrix.base.util.DateTimeUtil;
+import com.eventrix.model.localobj.CommandCreateObj;
+import com.eventrix.model.localobj.CommandUpdateObj;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,4 +37,26 @@ public class CommandEntity {
 
     @Column(name = "updated")
     private Instant updated;
+
+    @Column(name = "deleted")
+    private Instant deleted;
+
+    public CommandEntity(CommandCreateObj obj) {
+        logic = obj.logic();
+        targetService = obj.targetService();
+        description = obj.description();
+        created = DateTimeUtil.getCurrentTime();
+    }
+
+    public CommandEntity update(CommandUpdateObj obj) {
+        return new CommandEntity(
+                this.id,
+                obj.logic(),
+                obj.targetService(),
+                obj.description(),
+                this.created,
+                DateTimeUtil.getCurrentTime(),
+                this.deleted
+        );
+    }
 }

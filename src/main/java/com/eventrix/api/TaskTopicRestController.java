@@ -21,7 +21,7 @@ public class TaskTopicRestController {
             description = "Creates a new task topic and returns its ID"
     )
     @PostMapping(value = "/eventrix/api/v1/topic")
-    public IntegerDtoV1 createTaskTopic(@RequestBody TaskTopicCreateReqV1 req) {
+    public IntegerDtoV1 create(@RequestBody TaskTopicCreateReqV1 req) {
         int taskTopicId = taskTopicService.create(req);
         return new IntegerDtoV1(taskTopicId);
     }
@@ -32,7 +32,7 @@ public class TaskTopicRestController {
             errorCodes = {"400", "404", "500"}
     )
     @PutMapping("/eventrix/api/v1/topic/{topicId}")
-    public void updateTaskTopic(@PathVariable int topicId, @RequestBody TaskTopicUpdateReqV1 req) {
+    public void update(@PathVariable int topicId, @RequestBody TaskTopicUpdateReqV1 req) {
         taskTopicService.update(topicId, req);
     }
 
@@ -42,7 +42,7 @@ public class TaskTopicRestController {
             errorCodes = {"400", "404", "500"}
     )
     @PutMapping("/eventrix/api/v1/topic/{topicId}/active")
-    public void updateTaskTopicActive(@PathVariable int topicId, @RequestBody TaskTopicUpdateActiveReqV1 req) {
+    public void updateActive(@PathVariable int topicId, @RequestBody TaskTopicUpdateActiveReqV1 req) {
         taskTopicService.updateActive(topicId, req);
     }
 
@@ -52,7 +52,7 @@ public class TaskTopicRestController {
             errorCodes = {"404", "500"}
     )
     @DeleteMapping("/eventrix/api/v1/topic/{topicId}")
-    public void deleteTaskTopic(@PathVariable int topicId) {
+    public void delete(@PathVariable int topicId) {
         taskTopicService.delete(topicId);
     }
 }

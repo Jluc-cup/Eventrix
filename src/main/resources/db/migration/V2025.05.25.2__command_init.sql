@@ -12,7 +12,8 @@ CREATE TABLE command
     target_service VARCHAR(255)             NOT NULL,
     description    TEXT,
     created        TIMESTAMP WITH TIME ZONE NOT NULL,
-    updated        TIMESTAMP WITH TIME ZONE
+    updated        TIMESTAMP WITH TIME ZONE,
+    deleted        TIMESTAMP WITH TIME ZONE
 );
 
 
