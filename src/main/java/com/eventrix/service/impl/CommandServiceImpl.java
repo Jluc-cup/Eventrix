@@ -2,9 +2,8 @@ package com.eventrix.service.impl;
 
 import com.eventrix.api.req.CommandCreateReqV1;
 import com.eventrix.api.req.CommandUpdateReqV1;
-import com.eventrix.base.feature.AbstractService;
-import com.eventrix.base.feature.transaction.TransactionWrapper;
-import com.eventrix.dao.CommandDao;
+import com.eventrix.base.feature.command.CommandManager;
+import com.eventrix.base.feature.command.CommandNames;
 import com.eventrix.model.localobj.CommandCreateObj;
 import com.eventrix.model.localobj.CommandDeleteObj;
 import com.eventrix.model.localobj.CommandUpdateObj;
@@ -14,33 +13,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommandServiceImpl extends AbstractService implements CommandService {
+public class CommandServiceImpl implements CommandService {
 
-    public CommandServiceImpl(CommandDao commandDao, TransactionWrapper transaction) {
-      //  registerStrategy(CommandCreateObj.class,
-      //          new CommandCreateCommand(commandDao, transaction));
-      //  registerStrategy(CommandUpdateObj.class,
-      //          new CommandUpdateStrategy(commandDao, transaction));
-      //  registerStrategy(CommandDeleteObj.class,
-      //          new CommandDeleteStrategy(commandDao, transaction));
-    }
+
+    private final CommandManager commandManager;
 
 
     @Override
     public int create(CommandCreateReqV1 req) {
         final CommandCreateObj commandCreateObj = new CommandCreateObj(req);
-        return executeOperation(commandCreateObj);
+        return commandManager.executeCommand(CommandNames.COMMAND_CREATE, commandCreateObj);
     }
 
     @Override
     public void update(int commandId, CommandUpdateReqV1 req) {
         final CommandUpdateObj commandUpdateObj = new CommandUpdateObj(commandId, req);
-        executeOperation(commandUpdateObj);
+        commandManager.executeCommand(CommandNames.COMMAND_UPDATE, commandUpdateObj);
     }
 
     @Override
     public void delete(int commandId) {
         final CommandDeleteObj commandDeleteObj = new CommandDeleteObj(commandId);
-        executeOperation(commandDeleteObj);
+        commandManager.executeCommand(CommandNames.COMMAND_DELETE, commandDeleteObj);
     }
 }

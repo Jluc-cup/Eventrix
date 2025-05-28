@@ -1,15 +1,21 @@
 package com.eventrix.service.commands.tasktopic;
 
 import com.eventrix.base.feature.command.Command;
+import com.eventrix.base.feature.command.CommandDefinition;
+import com.eventrix.base.feature.command.CommandNames;
 import com.eventrix.base.feature.transaction.TransactionWrapper;
 import com.eventrix.dao.TaskTopicDao;
 import com.eventrix.model.entity.TaskTopicEntity;
+import com.eventrix.model.localobj.TaskTopicDeleteObj;
 import com.eventrix.model.localobj.TaskTopicUpdateObj;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@CommandDefinition(name = CommandNames.TASK_TOPIC_UPDATE,
+        contextType = TaskTopicUpdateObj.class,
+        returnType = Void.class)
 public class TaskTopicUpdateCommand implements Command<TaskTopicUpdateObj, Void> {
 
     private final TaskTopicDao taskTopicDao;
