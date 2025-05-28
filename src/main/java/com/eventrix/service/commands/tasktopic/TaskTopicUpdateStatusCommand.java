@@ -1,16 +1,16 @@
-package com.eventrix.service.strategy.tasktopic;
+package com.eventrix.service.commands.tasktopic;
 
+import com.eventrix.base.feature.command.Command;
 import com.eventrix.base.feature.transaction.TransactionWrapper;
 import com.eventrix.dao.TaskTopicDao;
 import com.eventrix.model.entity.TaskTopicEntity;
 import com.eventrix.model.localobj.TaskTopicUpdateStatusObj;
-import com.eventrix.service.strategy.OperationStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TaskTopicUpdateStatusStrategy implements OperationStrategy<TaskTopicUpdateStatusObj, Void> {
+public class TaskTopicUpdateStatusCommand implements Command<TaskTopicUpdateStatusObj, Void> {
 
     private final TaskTopicDao taskTopicDao;
 

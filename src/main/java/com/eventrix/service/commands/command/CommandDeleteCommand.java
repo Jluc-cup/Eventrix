@@ -1,16 +1,16 @@
-package com.eventrix.service.strategy.command;
+package com.eventrix.service.commands.command;
 
+import com.eventrix.base.feature.command.Command;
 import com.eventrix.base.feature.transaction.TransactionWrapper;
 import com.eventrix.dao.CommandDao;
 import com.eventrix.model.entity.CommandEntity;
 import com.eventrix.model.localobj.CommandDeleteObj;
-import com.eventrix.service.strategy.OperationStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommandDeleteStrategy implements OperationStrategy<CommandDeleteObj, Void> {
+public class CommandDeleteCommand implements Command<CommandDeleteObj, Void> {
 
     private final CommandDao commandDao;
 

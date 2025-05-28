@@ -5,7 +5,7 @@ import com.eventrix.base.feature.transaction.TransactionalOperation;
 import com.eventrix.dao.TaskTopicDao;
 import com.eventrix.model.entity.TaskTopicEntity;
 import com.eventrix.model.localobj.TaskTopicCreateObj;
-import com.eventrix.service.strategy.tasktopic.TaskTopicCreateStrategy;
+import com.eventrix.service.commands.tasktopic.TaskTopicCreateCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TaskTopicCreateStrategyV1Test {
+class TaskTopicCreateCommandV1Test {
 
     @Mock
     private TaskTopicDao taskTopicDao;
@@ -27,7 +27,7 @@ class TaskTopicCreateStrategyV1Test {
     private TransactionWrapper transaction;
 
     @InjectMocks
-    private TaskTopicCreateStrategy strategy;
+    private TaskTopicCreateCommand strategy;
 
     private TaskTopicCreateObj createObj;
 

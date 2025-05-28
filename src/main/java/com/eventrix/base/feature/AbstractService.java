@@ -1,7 +1,7 @@
 package com.eventrix.base.feature;
 
-import com.eventrix.service.strategy.OperationStrategy;
-import com.eventrix.service.strategy.StrategyContextInterface;
+import com.eventrix.base.feature.strategy.OperationStrategy;
+import com.eventrix.base.feature.strategy.StrategyContextInterface;
 
 import java.util.HashMap;
 import java.util.Map;
