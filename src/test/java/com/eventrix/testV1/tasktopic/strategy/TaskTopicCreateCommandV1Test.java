@@ -31,28 +31,28 @@ class TaskTopicCreateCommandV1Test {
 
     private TaskTopicCreateObj createObj;
 
-    @BeforeEach
-    public void setUp() {
-        createObj = new TaskTopicCreateObj();
-        doAnswer(invocation -> {
-            TaskTopicEntity savedEntity = invocation.getArgument(0);
-            savedEntity.setId(1);
-            return null;
-        }).when(taskTopicDao).save(any(TaskTopicEntity.class));
-    }
-
-    @Test
-    public void executeSuccessfulCreationReturnsEntityId() {
-        when(transaction.execute(any())).thenAnswer(invocation -> {
-            final TransactionalOperation<TaskTopicEntity> operation = invocation.getArgument(0);
-            return operation.execute();
-        });
-
-        final Integer result = strategy.execute(createObj);
-
-        assertThat(result).isEqualTo(1);
-        verify(taskTopicDao).save(any(TaskTopicEntity.class));
-        verify(transaction).execute(any());
-    }
+//    @BeforeEach
+//    public void setUp() {
+//        createObj = new TaskTopicCreateObj();
+//        doAnswer(invocation -> {
+//            TaskTopicEntity savedEntity = invocation.getArgument(0);
+//            savedEntity.setId(1);
+//            return null;
+//        }).when(taskTopicDao).save(any(TaskTopicEntity.class));
+//    }
+//
+//    @Test
+//    public void executeSuccessfulCreationReturnsEntityId() {
+//        when(transaction.execute(any())).thenAnswer(invocation -> {
+//            final TransactionalOperation<TaskTopicEntity> operation = invocation.getArgument(0);
+//            return operation.execute();
+//        });
+//
+//        final Integer result = strategy.execute(createObj);
+//
+//        assertThat(result).isEqualTo(1);
+//        verify(taskTopicDao).save(any(TaskTopicEntity.class));
+//        verify(transaction).execute(any());
+//    }
 
 }

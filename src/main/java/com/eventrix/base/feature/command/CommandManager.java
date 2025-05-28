@@ -18,9 +18,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CommandManager implements ApplicationContextAware {
 
-    private final Map<String, Command<?, ?>> commandRegistry = new HashMap<>();
-    private final Map<String, Class<?>> contextTypes = new HashMap<>();
-    private final Map<String, Class<?>> returnTypes = new HashMap<>();
+    private final Map<Class<?>, Command<?, ?>> commandRegistry = new HashMap<>();
+    private final Map<Class<?>, Class<?>> contextTypes = new HashMap<>();
+    private final Map<Class<?>, Class<?>> returnTypes = new HashMap<>();
     private ApplicationContext applicationContext;
 
     @PostConstruct
@@ -28,23 +28,23 @@ public class CommandManager implements ApplicationContextAware {
         final Map<String, Object> beans = applicationContext.getBeansWithAnnotation(CommandDefinition.class);
         for (Object bean : beans.values()) {
             final CommandDefinition definition = bean.getClass().getAnnotation(CommandDefinition.class);
-            final String commandName = definition.name();
+            final Class<?> beanCommand = definition.bean();
             final Class<?> contextType = definition.contextType();
             final Class<?> returnType = definition.returnType();
-            registerCommand(commandName, contextType, returnType, (Command<?, ?>) bean);
+            registerCommand(beanCommand, contextType, returnType, (Command<?, ?>) bean);
         }
     }
 
-    private void registerCommand(String commandName, Class<?> contextType, Class<?> returnType, Command<?, ?> command) {
-        commandRegistry.put(commandName, command);
-        contextTypes.put(commandName, contextType);
-        returnTypes.put(commandName, returnType);
+    private void registerCommand(Class<?> bean, Class<?> contextType, Class<?> returnType, Command<?, ?> command) {
+        commandRegistry.put(bean, command);
+        contextTypes.put(bean, contextType);
+        returnTypes.put(bean, returnType);
     }
 
 
-    public <T, R> R executeCommand(String commandName, T context) {
-        final Class<?> expectedContextType = contextTypes.get(commandName);
-        final Class<?> expectedReturnType = returnTypes.get(commandName);
+    public <T, R> R executeCommand(Class<?> bean, T context) {
+        final Class<?> expectedContextType = contextTypes.get(bean);
+        final Class<?> expectedReturnType = returnTypes.get(bean);
 
 
         if (expectedContextType == null) throw ExceptionFactory.create(ExceptionType.INTERNAL_SERVER_ERROR);
@@ -53,7 +53,7 @@ public class CommandManager implements ApplicationContextAware {
 
 
         @SuppressWarnings("unchecked")
-        final Command<T, R> command = (Command<T, R>) commandRegistry.get(commandName);
+        final Command<T, R> command = (Command<T, R>) commandRegistry.get(bean);
         return command.execute(context);
     }
 

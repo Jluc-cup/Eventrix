@@ -4,12 +4,17 @@ import com.eventrix.api.req.TaskTopicCreateReqV1;
 import com.eventrix.api.req.TaskTopicUpdateActiveReqV1;
 import com.eventrix.api.req.TaskTopicUpdateReqV1;
 import com.eventrix.base.feature.command.CommandManager;
-import com.eventrix.base.feature.command.CommandNames;
+
+import com.eventrix.base.feature.transaction.TransactionWrapper;
 import com.eventrix.model.localobj.TaskTopicCreateObj;
 import com.eventrix.model.localobj.TaskTopicDeleteObj;
 import com.eventrix.model.localobj.TaskTopicUpdateObj;
 import com.eventrix.model.localobj.TaskTopicUpdateStatusObj;
 import com.eventrix.service.TaskTopicService;
+import com.eventrix.service.commands.tasktopic.TaskTopicCreateCommand;
+import com.eventrix.service.commands.tasktopic.TaskTopicDeleteCommand;
+import com.eventrix.service.commands.tasktopic.TaskTopicUpdateCommand;
+import com.eventrix.service.commands.tasktopic.TaskTopicUpdateStatusCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,27 +24,50 @@ public class TaskTopicServiceImpl implements TaskTopicService {
 
     private final CommandManager commandManager;
 
+    private final TransactionWrapper transaction;
+
+
     @Override
     public int create(TaskTopicCreateReqV1 req) {
         final TaskTopicCreateObj taskTopicCreateObj = new TaskTopicCreateObj(req);
-        return commandManager.executeCommand(CommandNames.TASK_TOPIC_CREATE, taskTopicCreateObj);
+        return transaction.execute(() -> createTaskTopicT(taskTopicCreateObj));
     }
+
+    private int createTaskTopicT(TaskTopicCreateObj taskTopicCreateObj) {
+        return commandManager.executeCommand(TaskTopicCreateCommand.class, taskTopicCreateObj);
+    }
+
 
     @Override
     public void update(int taskTopicId, TaskTopicUpdateReqV1 req) {
         final TaskTopicUpdateObj taskTopicUpdateObj = new TaskTopicUpdateObj(taskTopicId, req);
-        commandManager.executeCommand(CommandNames.TASK_TOPIC_UPDATE, taskTopicUpdateObj);
+        transaction.executeWithoutResult(() -> updateT(taskTopicUpdateObj));
     }
+
+    private void updateT(TaskTopicUpdateObj taskTopicUpdateObj) {
+        commandManager.executeCommand(TaskTopicUpdateCommand.class, taskTopicUpdateObj);
+    }
+
 
     @Override
     public void updateActive(int taskTopicId, TaskTopicUpdateActiveReqV1 req) {
         final TaskTopicUpdateStatusObj taskTopicUpdateStatusObj = new TaskTopicUpdateStatusObj(taskTopicId, req);
-        commandManager.executeCommand(CommandNames.TASK_TOPIC_UPDATE_STATUS, taskTopicUpdateStatusObj);
+        transaction.executeWithoutResult(() -> updateStatusT(taskTopicUpdateStatusObj));
     }
+
+    private void updateStatusT(TaskTopicUpdateStatusObj taskTopicUpdateStatusObj) {
+        commandManager.executeCommand(TaskTopicUpdateStatusCommand.class, taskTopicUpdateStatusObj);
+    }
+
 
     @Override
     public void delete(int taskTopicId) {
         final TaskTopicDeleteObj taskTopicDeleteObj = new TaskTopicDeleteObj(taskTopicId);
-        commandManager.executeCommand(CommandNames.TASK_TOPIC_DELETE, taskTopicDeleteObj);
+        transaction.executeWithoutResult(() -> deleteT(taskTopicDeleteObj));
+    }
+
+
+    private void deleteT(TaskTopicDeleteObj taskTopicDeleteObj) {
+        commandManager.executeCommand(TaskTopicDeleteCommand.class, taskTopicDeleteObj);
     }
 }

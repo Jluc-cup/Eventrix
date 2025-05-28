@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface CommandDefinition {
-    String name();
+    Class<?> bean();
     Class<?> contextType();
-    Class<?> returnType();
+    Class<?> returnType() default void.class;
 }
